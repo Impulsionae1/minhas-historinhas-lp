@@ -1,0 +1,1447 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Minhas Historinhas — O clube de leitura da sua família</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --gold: #F5A623;
+  --gold-dark: #C97A10;
+  --gold-light: #FDEEC8;
+  --bg: #18171C;
+  --bg2: #1F1E25;
+  --bg3: #26242E;
+  --white: #FFFFFF;
+  --muted: rgba(255,255,255,0.55);
+  --border: rgba(245,166,35,0.15);
+  --radius: 20px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--white);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 16px;
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+
+/* ---- NOISE TEXTURE ---- */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.6;
+}
+
+/* ---- STARS BG ---- */
+.stars {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+.star {
+  position: absolute;
+  border-radius: 50%;
+  background: var(--gold);
+  animation: twinkle var(--d, 3s) ease-in-out infinite var(--delay, 0s);
+}
+@keyframes twinkle {
+  0%, 100% { opacity: var(--o1, 0.8); transform: scale(1); }
+  50% { opacity: var(--o2, 0.2); transform: scale(0.6); }
+}
+
+/* ---- NAV ---- */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 48px;
+  background: rgba(24,23,28,0.85);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+}
+
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+}
+.nav-logo svg { width: 36px; height: 36px; }
+.nav-logo-text { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 700; color: var(--white); }
+.nav-logo-text span { color: var(--gold); }
+
+.nav-cta {
+  background: var(--gold);
+  color: #18171C;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 10px 24px;
+  border-radius: 50px;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.nav-cta:hover { transform: translateY(-1px); box-shadow: 0 8px 24px rgba(245,166,35,0.35); }
+
+/* ---- SECTIONS ---- */
+section { position: relative; z-index: 1; }
+
+/* ---- HERO ---- */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 120px 24px 80px;
+  position: relative;
+}
+
+.hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(245,166,35,0.1);
+  border: 1px solid rgba(245,166,35,0.25);
+  border-radius: 50px;
+  padding: 6px 16px;
+  font-size: 13px;
+  color: var(--gold);
+  letter-spacing: 1px;
+  margin-bottom: 32px;
+  animation: fadeUp 0.8s ease both;
+}
+
+.hero-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(48px, 8vw, 96px);
+  font-weight: 900;
+  line-height: 1.05;
+  letter-spacing: -1px;
+  max-width: 900px;
+  animation: fadeUp 0.8s 0.1s ease both;
+}
+.hero-title em { color: var(--gold); font-style: italic; }
+
+.hero-sub {
+  font-size: clamp(16px, 2vw, 20px);
+  color: var(--muted);
+  max-width: 520px;
+  margin: 24px auto 48px;
+  font-weight: 300;
+  animation: fadeUp 0.8s 0.2s ease both;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+  animation: fadeUp 0.8s 0.3s ease both;
+}
+
+.btn-primary {
+  background: var(--gold);
+  color: #18171C;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  padding: 16px 36px;
+  border-radius: 50px;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(245,166,35,0.4); }
+
+.btn-ghost {
+  background: transparent;
+  color: var(--white);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  padding: 16px 32px;
+  border-radius: 50px;
+  border: 1px solid rgba(255,255,255,0.2);
+  cursor: pointer;
+  text-decoration: none;
+  transition: border-color 0.2s, background 0.2s;
+}
+.btn-ghost:hover { border-color: rgba(255,255,255,0.5); background: rgba(255,255,255,0.05); }
+
+/* Hero moon decoration */
+.hero-moon-wrap {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 700px;
+  height: 700px;
+  pointer-events: none;
+  z-index: -1;
+  opacity: 0.06;
+  animation: float 8s ease-in-out infinite;
+}
+
+.hero-proof {
+  margin-top: 64px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  color: var(--muted);
+  font-size: 14px;
+  animation: fadeUp 0.8s 0.5s ease both;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.hero-proof-avatars {
+  display: flex;
+}
+.hero-proof-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 2px solid var(--bg);
+  margin-left: -10px;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg3);
+}
+.hero-proof-avatar:first-child { margin-left: 0; }
+
+/* ---- MOCKUP STRIP ---- */
+.mockup-strip {
+  padding: 40px 24px 100px;
+  display: flex;
+  justify-content: center;
+}
+.mockup-phone {
+  width: 280px;
+  background: var(--bg2);
+  border-radius: 36px;
+  border: 1px solid var(--border);
+  overflow: hidden;
+  box-shadow: 0 40px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(245,166,35,0.08);
+  animation: float 6s ease-in-out infinite;
+}
+.phone-notch {
+  height: 32px;
+  background: var(--bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.phone-notch-pill {
+  width: 80px;
+  height: 10px;
+  background: #0a0a0d;
+  border-radius: 10px;
+}
+.phone-screen {
+  padding: 16px;
+  background: var(--bg2);
+}
+.phone-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+.phone-logo-icon {
+  width: 28px; height: 28px;
+}
+.phone-logo-text {
+  font-family: 'Playfair Display', serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--gold);
+}
+.phone-banner {
+  background: linear-gradient(135deg, #F5A623, #E8832A);
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 16px;
+  position: relative;
+  overflow: hidden;
+}
+.phone-banner-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: #18171C;
+  margin-bottom: 2px;
+}
+.phone-banner-sub {
+  font-size: 10px;
+  color: rgba(24,23,28,0.7);
+  margin-bottom: 8px;
+}
+.phone-banner-btn {
+  background: #18171C;
+  color: var(--gold);
+  border: none;
+  border-radius: 20px;
+  padding: 5px 12px;
+  font-size: 10px;
+  font-weight: 500;
+  cursor: pointer;
+}
+.phone-section-title {
+  font-size: 10px;
+  color: var(--gold);
+  letter-spacing: 1px;
+  margin-bottom: 10px;
+  font-weight: 500;
+}
+.phone-card {
+  background: var(--bg3);
+  border-radius: 12px;
+  padding: 12px;
+  margin-bottom: 8px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+.phone-card-emoji { font-size: 22px; }
+.phone-card-title { font-size: 11px; font-weight: 700; color: var(--white); }
+.phone-card-sub { font-size: 10px; color: var(--muted); }
+.phone-card-badge {
+  margin-top: 4px;
+  display: inline-flex;
+  background: rgba(245,166,35,0.15);
+  color: var(--gold);
+  font-size: 9px;
+  padding: 2px 7px;
+  border-radius: 20px;
+}
+
+/* ---- FOUNDER ---- */
+.founder {
+  padding: 100px 24px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.founder-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+}
+.founder-visual {
+  position: relative;
+}
+.founder-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 28px;
+  padding: 40px;
+  position: relative;
+  overflow: hidden;
+}
+.founder-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+}
+.founder-scene {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.founder-night-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  color: var(--muted);
+  margin-bottom: 4px;
+}
+.founder-night-dot {
+  width: 8px; height: 8px;
+  background: var(--gold);
+  border-radius: 50%;
+  animation: twinkle 2s ease-in-out infinite;
+}
+.founder-bubble {
+  background: var(--bg3);
+  border-radius: 16px;
+  padding: 16px 20px;
+  font-size: 14px;
+  line-height: 1.6;
+  position: relative;
+}
+.founder-bubble.dad {
+  border-left: 3px solid var(--gold);
+  color: var(--white);
+}
+.founder-bubble.kid {
+  border-left: 3px solid rgba(255,255,255,0.2);
+  color: var(--muted);
+  margin-left: 20px;
+}
+.founder-bubble-label {
+  font-size: 11px;
+  font-weight: 500;
+  margin-bottom: 6px;
+  letter-spacing: 0.5px;
+}
+.founder-bubble.dad .founder-bubble-label { color: var(--gold); }
+.founder-bubble.kid .founder-bubble-label { color: var(--muted); }
+.founder-time {
+  text-align: center;
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: 2px;
+  margin: 4px 0;
+}
+.founder-float-badge {
+  display: inline-flex;
+  margin-top: 24px;
+  background: var(--gold);
+  color: #18171C;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 8px 16px;
+  border-radius: 50px;
+  white-space: nowrap;
+  box-shadow: 0 8px 24px rgba(245,166,35,0.3);
+}
+.founder-content { }
+.founder-quote {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(24px, 3.5vw, 38px);
+  font-weight: 700;
+  line-height: 1.25;
+  margin-bottom: 28px;
+}
+.founder-quote em { color: var(--gold); font-style: italic; }
+.founder-text {
+  color: var(--muted);
+  font-size: 16px;
+  font-weight: 300;
+  line-height: 1.8;
+  margin-bottom: 20px;
+}
+.founder-text strong { color: var(--white); font-weight: 500; }
+.founder-sig {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 36px;
+  padding-top: 28px;
+  border-top: 1px solid var(--border);
+}
+.founder-avatar {
+  width: 52px; height: 52px;
+  background: var(--bg3);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  border: 2px solid var(--border);
+  flex-shrink: 0;
+}
+.founder-sig-name {
+  font-weight: 500;
+  font-size: 15px;
+}
+.founder-sig-role {
+  font-size: 13px;
+  color: var(--muted);
+}
+.founder-kids {
+  display: flex;
+  gap: 8px;
+  margin-top: 6px;
+}
+.founder-kid-tag {
+  background: rgba(245,166,35,0.1);
+  border: 1px solid rgba(245,166,35,0.2);
+  color: var(--gold);
+  font-size: 11px;
+  padding: 3px 10px;
+  border-radius: 20px;
+}
+.founder-photo-wrap {
+  position: relative;
+  border-radius: 28px;
+  overflow: hidden;
+}
+.founder-photo {
+  width: 100%;
+  display: block;
+  border-radius: 28px;
+  object-fit: cover;
+  aspect-ratio: 4/5;
+  filter: brightness(0.92) contrast(1.05) saturate(0.9);
+  border: 1px solid var(--border);
+}
+.founder-photo-caption {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(24,23,28,0.75);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--border);
+  border-radius: 50px;
+  padding: 7px 14px;
+  font-size: 12px;
+  color: rgba(255,255,255,0.85);
+}
+.founder-sig-avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center 20%;
+  border: 2px solid var(--gold);
+  flex-shrink: 0;
+}
+@media (max-width: 768px) {
+  .founder-inner { grid-template-columns: 1fr; gap: 40px; }
+  .founder-float-badge { position: static; display: inline-block; margin-top: 16px; }
+}
+
+/* ---- HOW ---- */
+.how {
+  padding: 100px 24px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.section-label {
+  font-size: 12px;
+  letter-spacing: 3px;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: 16px;
+  font-weight: 500;
+}
+
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(32px, 5vw, 56px);
+  font-weight: 700;
+  line-height: 1.15;
+  max-width: 600px;
+  margin-bottom: 64px;
+}
+.section-title em { color: var(--gold); font-style: italic; }
+
+.how-steps {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2px;
+  background: var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.how-step {
+  background: var(--bg2);
+  padding: 48px 36px;
+  position: relative;
+  transition: background 0.3s;
+}
+.how-step:hover { background: var(--bg3); }
+.how-step-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 64px;
+  font-weight: 900;
+  color: rgba(245,166,35,0.12);
+  line-height: 1;
+  margin-bottom: 16px;
+  display: block;
+}
+.how-step-icon { font-size: 32px; margin-bottom: 16px; display: block; }
+.how-step-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+.how-step-text { color: var(--muted); font-size: 15px; font-weight: 300; line-height: 1.6; }
+
+/* ---- FEATURES ---- */
+.features {
+  padding: 100px 24px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto auto;
+  gap: 16px;
+}
+
+.feat-card {
+  background: var(--bg2);
+  border-radius: var(--radius);
+  padding: 40px;
+  border: 1px solid var(--border);
+  transition: border-color 0.3s, transform 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+.feat-card:hover { border-color: rgba(245,166,35,0.35); transform: translateY(-3px); }
+.feat-card.big { grid-column: span 2; display: flex; gap: 48px; align-items: center; }
+.feat-card.big .feat-visual { flex-shrink: 0; }
+
+.feat-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(245,166,35,0.4), transparent);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.feat-card:hover::before { opacity: 1; }
+
+.feat-icon { font-size: 36px; margin-bottom: 20px; }
+.feat-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+.feat-text { color: var(--muted); font-size: 15px; font-weight: 300; line-height: 1.65; }
+
+/* AI story form mini */
+.ai-form-mini {
+  background: var(--bg3);
+  border-radius: 16px;
+  padding: 24px;
+  width: 320px;
+  border: 1px solid var(--border);
+}
+.ai-form-mini-title { font-size: 13px; font-weight: 700; color: var(--gold); margin-bottom: 16px; }
+.ai-field {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 8px;
+  width: 100%;
+}
+.ai-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }
+.ai-tag {
+  background: rgba(245,166,35,0.12);
+  color: var(--gold);
+  font-size: 11px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  cursor: pointer;
+}
+.ai-tag.active { background: var(--gold); color: #18171C; }
+.ai-generate-btn {
+  width: 100%;
+  background: var(--gold);
+  color: #18171C;
+  border: none;
+  border-radius: 10px;
+  padding: 12px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+/* catalog mini */
+.catalog-mini { display: flex; flex-direction: column; gap: 8px; }
+.catalog-item {
+  background: var(--bg3);
+  border-radius: 12px;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.catalog-item-emoji { font-size: 20px; }
+.catalog-item-title { font-size: 13px; font-weight: 500; }
+.catalog-item-sub { font-size: 11px; color: var(--muted); }
+.catalog-badge { margin-left: auto; background: rgba(34,197,94,0.15); color: #4ade80; font-size: 10px; padding: 3px 8px; border-radius: 20px; white-space: nowrap; }
+
+/* ---- TESTIMONIALS ---- */
+.testimonials {
+  padding: 100px 24px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.testimonials-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 16px;
+}
+.testi-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 36px;
+  transition: border-color 0.3s;
+}
+.testi-card:hover { border-color: rgba(245,166,35,0.3); }
+.testi-stars { color: var(--gold); font-size: 14px; margin-bottom: 16px; letter-spacing: 2px; }
+.testi-text {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 17px;
+  line-height: 1.6;
+  margin-bottom: 24px;
+  color: rgba(255,255,255,0.88);
+}
+.testi-author { display: flex; align-items: center; gap: 12px; }
+.testi-avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--bg3); display: flex; align-items: center; justify-content: center; font-size: 18px; }
+.testi-name { font-size: 14px; font-weight: 500; }
+.testi-meta { font-size: 12px; color: var(--muted); }
+
+/* ---- PRICING ---- */
+.pricing {
+  padding: 100px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+.pricing .section-label { text-align: center; }
+.pricing .section-title { text-align: center; margin: 0 auto 48px; }
+
+.pricing-card {
+  background: var(--bg2);
+  border: 1px solid rgba(245,166,35,0.4);
+  border-radius: 28px;
+  padding: 56px 64px;
+  max-width: 500px;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 80px rgba(245,166,35,0.08);
+}
+.pricing-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+}
+.pricing-badge {
+  display: inline-flex;
+  background: rgba(245,166,35,0.15);
+  color: var(--gold);
+  font-size: 12px;
+  padding: 5px 14px;
+  border-radius: 20px;
+  margin-bottom: 28px;
+  letter-spacing: 1px;
+}
+.pricing-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.pricing-price {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 4px;
+  margin: 24px 0;
+}
+.pricing-currency { font-size: 24px; font-weight: 400; color: var(--gold); padding-bottom: 8px; }
+.pricing-value {
+  font-family: 'Playfair Display', serif;
+  font-size: 80px;
+  font-weight: 900;
+  color: var(--gold);
+  line-height: 1;
+}
+.pricing-period { font-size: 16px; color: var(--muted); padding-bottom: 12px; }
+.pricing-sub { color: var(--muted); font-size: 14px; margin-bottom: 36px; }
+
+.pricing-features { text-align: left; margin-bottom: 40px; display: flex; flex-direction: column; gap: 14px; }
+.pricing-feature { display: flex; align-items: flex-start; gap: 12px; font-size: 15px; }
+.pricing-feature-check {
+  width: 20px; height: 20px;
+  background: rgba(245,166,35,0.15);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: var(--gold);
+  font-size: 11px;
+  margin-top: 2px;
+}
+.pricing-cta {
+  width: 100%;
+  background: var(--gold);
+  color: #18171C;
+  border: none;
+  border-radius: 50px;
+  padding: 18px;
+  font-size: 16px;
+  font-weight: 500;
+  font-family: 'DM Sans', sans-serif;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.pricing-cta:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(245,166,35,0.4); }
+.pricing-guarantee {
+  margin-top: 20px;
+  font-size: 13px;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  justify-content: center;
+}
+
+/* ---- FAQ ---- */
+.faq {
+  padding: 100px 24px;
+  max-width: 720px;
+  margin: 0 auto;
+}
+.faq .section-title { margin-bottom: 48px; }
+.faq-item {
+  border-bottom: 1px solid var(--border);
+  padding: 24px 0;
+  cursor: pointer;
+}
+.faq-question {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 17px;
+  font-weight: 500;
+  gap: 16px;
+}
+.faq-icon {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  background: rgba(245,166,35,0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gold);
+  font-size: 16px;
+  flex-shrink: 0;
+  transition: transform 0.3s;
+}
+.faq-answer {
+  color: var(--muted);
+  font-size: 15px;
+  font-weight: 300;
+  line-height: 1.7;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease, padding 0.3s;
+}
+.faq-item.open .faq-answer { max-height: 200px; padding-top: 16px; }
+.faq-item.open .faq-icon { transform: rotate(45deg); }
+
+/* ---- CTA FINAL ---- */
+.cta-final {
+  padding: 120px 24px;
+  text-align: center;
+  position: relative;
+}
+.cta-final-glow {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 600px;
+  height: 400px;
+  background: radial-gradient(ellipse, rgba(245,166,35,0.12) 0%, transparent 70%);
+  pointer-events: none;
+}
+.cta-final-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(36px, 6vw, 72px);
+  font-weight: 900;
+  line-height: 1.1;
+  max-width: 700px;
+  margin: 0 auto 24px;
+}
+.cta-final-title em { color: var(--gold); font-style: italic; }
+.cta-final-sub { color: var(--muted); font-size: 18px; font-weight: 300; margin-bottom: 48px; }
+
+/* ---- FOOTER ---- */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 48px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  position: relative;
+  z-index: 1;
+}
+.footer-logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--white);
+}
+.footer-logo span { color: var(--gold); }
+.footer-copy { font-size: 13px; color: var(--muted); }
+
+/* ---- ANIMATIONS ---- */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.reveal.visible { opacity: 1; transform: none; }
+
+/* ---- DIVIDER ---- */
+.divider {
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border), transparent);
+  margin: 0;
+  position: relative;
+  z-index: 1;
+}
+
+/* ---- RESPONSIVE ---- */
+@media (max-width: 768px) {
+  nav { padding: 16px 20px; }
+  .features-grid { grid-template-columns: 1fr; }
+  .feat-card.big { flex-direction: column; grid-column: span 1; }
+  .ai-form-mini { width: 100%; }
+  .pricing-card { padding: 36px 28px; }
+  .pricing-value { font-size: 64px; }
+  footer { flex-direction: column; text-align: center; padding: 32px 24px; }
+  .how-steps { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- Stars -->
+<div class="stars" id="stars"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">
+    <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="18" cy="16" r="11" fill="#F5A623"/>
+      <circle cx="21" cy="13" r="9" fill="#18171C"/>
+      <rect x="15" y="24" width="2.5" height="9" rx="1.2" fill="#9B5E08"/>
+      <path d="M17.5 25.5 Q19.5 24 23 24.5 L23 32 Q19.5 33 17.5 32 Z" fill="#FDEEC8" opacity="0.9"/>
+      <path d="M17.5 25.5 Q15.5 24 12 24.5 L12 32 Q15.5 33 17.5 32 Z" fill="#FDEEC8" opacity="0.75"/>
+      <polygon points="24,23 24.7,25.5 27.2,26 24.7,26.5 24,29 23.3,26.5 20.8,26 23.3,25.5" fill="#F5A623"/>
+    </svg>
+    <span class="nav-logo-text"><span>Minhas</span> Historinhas</span>
+  </a>
+  <a href="#plano" class="nav-cta">Começar agora ✦</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-moon-wrap">
+    <svg viewBox="0 0 700 700" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="350" cy="350" r="280" fill="#F5A623"/>
+      <circle cx="420" cy="290" r="235" fill="#18171C"/>
+    </svg>
+  </div>
+
+  <div class="hero-eyebrow">✦ O clube de leitura da sua família</div>
+
+  <h1 class="hero-title">
+    A história de hoje<br/>à noite é <em>de vocês.</em>
+  </h1>
+
+  <p class="hero-sub">
+    Clássicos que toda criança merece conhecer — e histórias novas, criadas com IA, com o nome e os sonhos do seu filho. Todo dia. Toda noite.
+  </p>
+
+  <div class="hero-actions">
+    <a href="#plano" class="btn-primary">✦ Quero fazer parte</a>
+    <a href="#como-funciona" class="btn-ghost">Como funciona</a>
+  </div>
+
+  <div class="hero-proof">
+    <div style="display:flex; gap:32px; flex-wrap:wrap; justify-content:center; align-items:center;">
+      <div style="text-align:center;">
+        <div style="font-family:'Playfair Display',serif; font-size:28px; font-weight:900; color:var(--gold); line-height:1;">1.000+</div>
+        <div style="font-size:12px; color:var(--muted); margin-top:4px;">palavras a mais por ano<br/>em crianças que ouvem histórias</div>
+      </div>
+      <div style="width:1px; height:40px; background:var(--border);"></div>
+      <div style="text-align:center;">
+        <div style="font-family:'Playfair Display',serif; font-size:28px; font-weight:900; color:var(--gold); line-height:1;">💛</div>
+        <div style="font-size:12px; color:var(--muted); margin-top:4px;">memórias com os filhos<br/>começam com uma história</div>
+      </div>
+      <div style="width:1px; height:40px; background:var(--border);"></div>
+      <div style="text-align:center;">
+        <div style="font-family:'Playfair Display',serif; font-size:28px; font-weight:900; color:var(--gold); line-height:1;">15 min</div>
+        <div style="font-size:12px; color:var(--muted); margin-top:4px;">por noite já fazem<br/>diferença no desenvolvimento</div>
+      </div>
+    </div>
+    <div style="width:100%; text-align:center; margin-top:12px; font-size:11px; color:rgba(255,255,255,0.3); letter-spacing:1px;">Fonte: American Academy of Pediatrics · Reading Aloud Research</div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- FOUNDER STORY -->
+<section class="founder">
+  <div class="founder-inner reveal">
+
+    <!-- Visual: cena noturna -->
+    <div class="founder-visual">
+      <div class="founder-card">
+        <div class="founder-scene">
+          <div class="founder-night-header">
+            <div class="founder-night-dot"></div>
+            <span>Toda noite, lá em casa — São Paulo</span>
+          </div>
+
+          <div class="founder-time">🌙 21h30</div>
+
+          <div class="founder-bubble dad">
+            <div class="founder-bubble-label">Adilson, pai</div>
+            "Olha, fiz uma história com o nome de vocês aqui no app..."
+          </div>
+
+          <div class="founder-bubble kid">
+            <div class="founder-bubble-label">Davi, 11 anos</div>
+            "Pai, lê de novo! Lê outra! Lê mais uma!" 😄
+          </div>
+
+          <div class="founder-bubble dad">
+            <div class="founder-bubble-label">Theo, 5 anos</div>
+            "Eu quero uma com meu nome! E com dinossauro!" 🦕
+          </div>
+
+          <div class="founder-bubble kid" style="border-left-color: rgba(245,166,35,0.4); color: var(--white);">
+            <div class="founder-bubble-label" style="color: var(--gold);">E foi aí que tudo fez sentido ✦</div>
+            Eles ficaram pedindo histórias a noite inteira. Ali eu soube que tinha algo especial.
+          </div>
+        </div>
+        <div class="founder-float-badge">✦ A noite que virou produto</div>
+      </div>
+    </div>
+
+    <!-- Text -->
+    <div class="founder-content">
+      <div class="section-label">Por que criei isso</div>
+      <h2 class="founder-quote">
+        Meus filhos esgotaram<br/>os livros. Eu criei<br/><em>os próximos.</em>
+      </h2>
+      <p class="founder-text">
+        Sou pai do <strong>Davi (11 anos)</strong> e do <strong>Theo (5 anos)</strong>. Ler para eles toda noite é um ritual sagrado lá em casa — e a gente tem tanto livro que ocupa dois quartos inteiros. <em>Sim, dois quartos.</em>
+      </p>
+      <p class="founder-text">
+        O problema? <strong>Não cabe mais nenhum livro físico em casa.</strong> Literalmente. Então comecei a pensar em como continuar esse hábito de um jeito digital — sem perder a magia.
+      </p>
+      <p class="founder-text">
+        Foi quando criei a primeira versão do Minhas Historinhas. No dia que mostrei para o Davi e o Theo, com os nomes deles nas histórias, eles <strong>não queriam parar.</strong> Ficaram pedindo uma história atrás da outra a noite inteira.
+      </p>
+      <p class="founder-text">
+        Ali eu entendi que tinha algo especial. <strong>Não de uma grande empresa — de um pai</strong> que queria continuar lendo para os filhos, mesmo com a estante transbordando.
+      </p>
+
+      <div class="founder-sig">
+        <div class="founder-avatar" style="background:var(--bg3); border: 1.5px solid rgba(245,166,35,0.35); display:flex; align-items:center; justify-content:center;">
+          <svg width="28" height="28" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="18" cy="16" r="11" fill="#F5A623"/>
+            <circle cx="21" cy="13" r="9" fill="#18171C"/>
+            <rect x="15" y="24" width="2.5" height="9" rx="1.2" fill="#9B5E08"/>
+            <path d="M17.5 25.5 Q19.5 24 23 24.5 L23 32 Q19.5 33 17.5 32 Z" fill="#FDEEC8" opacity="0.9"/>
+            <path d="M17.5 25.5 Q15.5 24 12 24.5 L12 32 Q15.5 33 17.5 32 Z" fill="#FDEEC8" opacity="0.75"/>
+            <polygon points="24,23 24.7,25.5 27.2,26 24.7,26.5 24,29 23.3,26.5 20.8,26 23.3,25.5" fill="#F5A623"/>
+          </svg>
+        </div>
+        <div>
+          <div class="founder-sig-name">Adilson de Andrade</div>
+          <div class="founder-sig-role">Pai do Davi e do Theo — e o cara que lê histórias toda noite desde que eles nasceram.</div>
+          <div class="founder-kids">
+            <span class="founder-kid-tag">🦕 Theo, 5 anos</span>
+            <span class="founder-kid-tag">📚 Davi, 11 anos</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- HOW IT WORKS -->
+<section class="how" id="como-funciona">
+  <div class="reveal">
+    <div class="section-label">Como funciona</div>
+    <h2 class="section-title">Simples como uma <em>história de ninar</em></h2>
+  </div>
+  <div class="how-steps reveal">
+    <div class="how-step">
+      <span class="how-step-num">01</span>
+      <span class="how-step-icon">📱</span>
+      <h3 class="how-step-title">Abra o app</h3>
+      <p class="how-step-text">Acesse pelo celular, tablet ou computador. É um PWA — sem precisar instalar nada.</p>
+    </div>
+    <div class="how-step">
+      <span class="how-step-num">02</span>
+      <span class="how-step-icon">📚</span>
+      <h3 class="how-step-title">Escolha ou crie</h3>
+      <p class="how-step-text">Explore o catálogo de clássicos em domínio público ou gere uma história única com IA em segundos.</p>
+    </div>
+    <div class="how-step">
+      <span class="how-step-num">03</span>
+      <span class="how-step-icon">🌙</span>
+      <h3 class="how-step-title">Leia juntos</h3>
+      <p class="how-step-text">Toda noite. Esse momento simples constrói o hábito de leitura e cria memórias que duram a vida toda.</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- FEATURES -->
+<section class="features" id="funcionalidades">
+  <div class="reveal">
+    <div class="section-label">O que está incluído</div>
+    <h2 class="section-title">Tudo que uma família precisa para <em>ler mais</em></h2>
+  </div>
+
+  <div class="features-grid reveal">
+    <!-- Big card: AI -->
+    <div class="feat-card big">
+      <div>
+        <div class="feat-icon">✦</div>
+        <h3 class="feat-title">Histórias criadas com IA</h3>
+        <p class="feat-text">Diga o nome do seu filho, o tema que ele ama — dinossauros, espaço, princesas — e um medo ou desafio que ele enfrenta. A IA cria uma história exclusiva com moral, personagens e aventura. Gere até 3 histórias por dia.</p>
+      </div>
+      <div class="feat-visual">
+        <div class="ai-form-mini">
+          <div class="ai-form-mini-title">✦ Criar história com IA</div>
+          <input class="ai-field" type="text" placeholder="Nome da criança: Davi, Theo..." readonly/>
+          <input class="ai-field" type="text" placeholder="Tem medo do escuro, não gosta de..." readonly/>
+          <div style="font-size:11px;color:var(--muted);margin-bottom:8px">Tema</div>
+          <div class="ai-tags">
+            <span class="ai-tag active">Coragem</span>
+            <span class="ai-tag">Amizade</span>
+            <span class="ai-tag">Família</span>
+            <span class="ai-tag">Ciência</span>
+            <span class="ai-tag">Natureza</span>
+          </div>
+          <button class="ai-generate-btn">✦ Gerar história</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Catalog -->
+    <div class="feat-card">
+      <div class="feat-icon">📚</div>
+      <h3 class="feat-title">Biblioteca de clássicos</h3>
+      <p class="feat-text" style="margin-bottom:24px">Acesso a todo o catálogo de histórias em domínio público — Grimm, Andersen, La Fontaine, Monteiro Lobato e muito mais. Curadas por faixa etária.</p>
+      <div class="catalog-mini">
+        <div class="catalog-item">
+          <span class="catalog-item-emoji">🌹</span>
+          <div>
+            <div class="catalog-item-title">O Pequeno Príncipe</div>
+            <div class="catalog-item-sub">6+ anos</div>
+          </div>
+          <span class="catalog-badge">✓ Domínio Público</span>
+        </div>
+        <div class="catalog-item">
+          <span class="catalog-item-emoji">🦢</span>
+          <div>
+            <div class="catalog-item-title">O Patinho Feio</div>
+            <div class="catalog-item-sub">4+ anos</div>
+          </div>
+          <span class="catalog-badge">✓ Domínio Público</span>
+        </div>
+        <div class="catalog-item">
+          <span class="catalog-item-emoji">🐺</span>
+          <div>
+            <div class="catalog-item-title">Chapeuzinho Vermelho</div>
+            <div class="catalog-item-sub">4+ anos</div>
+          </div>
+          <span class="catalog-badge">✓ Domínio Público</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- PWA -->
+    <div class="feat-card">
+      <div class="feat-icon">📱</div>
+      <h3 class="feat-title">Funciona em qualquer tela</h3>
+      <p class="feat-text">Celular, tablet ou computador. É um PWA — você adiciona na tela inicial e usa como qualquer app, sem instalar nada da loja.</p>
+    </div>
+
+    <!-- Moral -->
+    <div class="feat-card">
+      <div class="feat-icon">💛</div>
+      <h3 class="feat-title">Histórias com propósito</h3>
+      <p class="feat-text">Cada história gerada pela IA aborda um medo ou desafio real da criança — medo do escuro, dificuldade de dividir, ansiedade escolar — com leveza e afeto.</p>
+    </div>
+
+    <!-- Save -->
+    <div class="feat-card">
+      <div class="feat-icon">🔖</div>
+      <h3 class="feat-title">Salve as favoritas</h3>
+      <p class="feat-text">Guarde as histórias geradas para reler sempre que quiser. Os filhos adoram pedir a mesma história várias vezes.</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials">
+  <div class="reveal">
+    <div class="section-label">O que as famílias dizem</div>
+    <h2 class="section-title">Noites que <em>viram memória</em></h2>
+  </div>
+  <div class="testimonials-grid reveal">
+    <div class="testi-card">
+      <div class="testi-stars">★★★★★</div>
+      <p class="testi-text">"Meu filho de 5 anos pede a história do 'menino corajoso' toda noite. Foi gerada com o nome dele, o medo dele. Ele acha que é real."</p>
+      <div class="testi-author">
+        <div class="testi-avatar">👨</div>
+        <div>
+          <div class="testi-name">Rafael M.</div>
+          <div class="testi-meta">Pai do Theo, 5 anos</div>
+        </div>
+      </div>
+    </div>
+    <div class="testi-card">
+      <div class="testi-stars">★★★★★</div>
+      <p class="testi-text">"Nunca tínhamos lido Chapeuzinho Vermelho juntos. Com o app, lemos em 10 minutos e ficamos conversando por 30. Vale demais."</p>
+      <div class="testi-author">
+        <div class="testi-avatar">👩</div>
+        <div>
+          <div class="testi-name">Camila A.</div>
+          <div class="testi-meta">Mãe da Beatriz, 7 anos</div>
+        </div>
+      </div>
+    </div>
+    <div class="testi-card">
+      <div class="testi-stars">★★★★★</div>
+      <p class="testi-text">"Minha filha de 9 anos dizia que odiava ler. Depois que começamos com as histórias personalizadas, ela mesma pede para ler antes de dormir."</p>
+      <div class="testi-author">
+        <div class="testi-avatar">👩</div>
+        <div>
+          <div class="testi-name">Fernanda L.</div>
+          <div class="testi-meta">Mãe da Sophia, 9 anos</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- PRICING -->
+<section class="pricing" id="plano">
+  <div class="reveal">
+    <div class="section-label">Plano</div>
+    <h2 class="section-title">Um preço justo para<br/><em>momentos que não têm preço</em></h2>
+  </div>
+
+  <div class="pricing-card reveal">
+    <div class="pricing-badge">✦ ACESSO COMPLETO</div>
+    <div class="pricing-name">Clube Família</div>
+    <div class="pricing-price">
+      <span class="pricing-currency">R$</span>
+      <span class="pricing-value">19</span>
+      <span class="pricing-period">/mês</span>
+    </div>
+    <p class="pricing-sub">Menos que uma pizza. Mais que um livro.<br/>Cancele quando quiser.</p>
+
+    <div class="pricing-features">
+      <div class="pricing-feature">
+        <div class="pricing-feature-check">✓</div>
+        <span>Acesso a todo o catálogo de clássicos em domínio público</span>
+      </div>
+      <div class="pricing-feature">
+        <div class="pricing-feature-check">✓</div>
+        <span>Gere até <strong>3 histórias com IA por dia</strong> — personalizadas para o seu filho</span>
+      </div>
+      <div class="pricing-feature">
+        <div class="pricing-feature-check">✓</div>
+        <span>Salve e releia suas histórias favoritas</span>
+      </div>
+      <div class="pricing-feature">
+        <div class="pricing-feature-check">✓</div>
+        <span>Funciona em celular, tablet e computador</span>
+      </div>
+      <div class="pricing-feature">
+        <div class="pricing-feature-check">✓</div>
+        <span>Novas histórias no catálogo toda semana</span>
+      </div>
+      <div class="pricing-feature">
+        <div class="pricing-feature-check">✓</div>
+        <span>Cancele quando quiser, sem burocracia</span>
+      </div>
+    </div>
+
+    <a href="https://app.minhashistorinhas.com.br" target="_blank" class="pricing-cta" style="display:block;text-align:center;text-decoration:none;">✦ Começar agora — R$ 19/mês</a>
+    <div class="pricing-guarantee">🔒 Pagamento seguro · Cancele a qualquer momento</div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- FAQ -->
+<section class="faq">
+  <div class="reveal">
+    <div class="section-label">Perguntas frequentes</div>
+    <h2 class="section-title">Tirou alguma <em>dúvida?</em></h2>
+  </div>
+
+  <div class="reveal">
+    <div class="faq-item">
+      <div class="faq-question">
+        <span>As histórias geradas pela IA são seguras para crianças?</span>
+        <div class="faq-icon">+</div>
+      </div>
+      <div class="faq-answer">Sim. A IA é configurada especificamente para gerar conteúdo infantil, positivo e adequado à faixa etária. Todas as histórias têm moral e linguagem adaptadas para crianças.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-question">
+        <span>O que significa "domínio público"?</span>
+        <div class="faq-icon">+</div>
+      </div>
+      <div class="faq-answer">São histórias clássicas cujos direitos de autor já expiraram — como os contos dos Irmãos Grimm, Hans Christian Andersen e outros. Podemos oferecer legalmente sem custo adicional.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-question">
+        <span>Posso usar em mais de um dispositivo?</span>
+        <div class="faq-icon">+</div>
+      </div>
+      <div class="faq-answer">Sim. Uma assinatura funciona em qualquer dispositivo com o mesmo login — celular, tablet, computador. Sua família inteira acessa.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-question">
+        <span>Como cancelo se não quiser mais?</span>
+        <div class="faq-icon">+</div>
+      </div>
+      <div class="faq-answer">Direto nas configurações da sua conta, em menos de 1 minuto. Sem multa, sem carência, sem ligação para central de atendimento.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-question">
+        <span>Precisa instalar um app?</span>
+        <div class="faq-icon">+</div>
+      </div>
+      <div class="faq-answer">Não. É um PWA — você acessa pelo navegador e pode adicionar na tela inicial do celular para usar como um app nativo. Funciona offline para histórias já carregadas.</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- CTA FINAL -->
+<section class="cta-final">
+  <div class="cta-final-glow"></div>
+  <div class="reveal">
+    <h2 class="cta-final-title">
+      Hoje à noite, leia uma história<br/><em>que eles nunca vão esquecer</em>
+    </h2>
+    <p class="cta-final-sub">Junte-se às famílias que já tornam a hora de dormir o melhor momento do dia.</p>
+    <a href="https://app.minhashistorinhas.com.br" target="_blank" class="btn-primary" style="font-size:18px;padding:20px 48px">✦ Começar agora — R$ 19/mês</a>
+    <p style="margin-top:20px;font-size:13px;color:var(--muted)">Cancele quando quiser · Sem compromisso</p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo"><span>Minhas</span> Historinhas</div>
+  <div class="footer-copy">© 2025 Minhas Historinhas · Impulsionaê · Feito com 💛 para famílias brasileiras</div>
+</footer>
+
+<script>
+// Generate stars
+const starsContainer = document.getElementById('stars');
+for (let i = 0; i < 60; i++) {
+  const star = document.createElement('div');
+  star.className = 'star';
+  const size = Math.random() * 2.5 + 0.8;
+  star.style.cssText = `
+    left: ${Math.random() * 100}%;
+    top: ${Math.random() * 100}%;
+    width: ${size}px;
+    height: ${size}px;
+    --d: ${2 + Math.random() * 4}s;
+    --delay: ${Math.random() * 5}s;
+    --o1: ${0.4 + Math.random() * 0.6};
+    --o2: ${Math.random() * 0.2};
+    opacity: ${0.3 + Math.random() * 0.7};
+  `;
+  starsContainer.appendChild(star);
+}
+
+// Scroll reveal
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry, i) => {
+    if (entry.isIntersecting) {
+      setTimeout(() => entry.target.classList.add('visible'), i * 80);
+    }
+  });
+}, { threshold: 0.1 });
+reveals.forEach(el => observer.observe(el));
+
+// FAQ toggle
+document.querySelectorAll('.faq-item').forEach(item => {
+  item.addEventListener('click', () => {
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+    if (!isOpen) item.classList.add('open');
+  });
+});
+</script>
+</body>
+</html>
