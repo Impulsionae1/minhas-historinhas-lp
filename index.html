@@ -957,7 +957,17 @@ footer {
 
 /* ---- RESPONSIVE ---- */
 @media (max-width: 768px) {
-  nav { padding: 16px 20px; }
+  nav { padding: 12px 16px; }
+  .nav-logo svg { width: 28px; height: 28px; }
+  .nav-logo-text { font-size: 15px; }
+  .nav-cta { padding: 8px 16px; font-size: 13px; }
+
+  .hero { padding: 100px 20px 60px; }
+  .hero-title { font-size: clamp(36px, 10vw, 56px); letter-spacing: -0.5px; }
+  .hero-sub { font-size: 15px; margin: 16px auto 32px; }
+  .btn-primary { font-size: 15px; padding: 14px 28px; }
+  .btn-ghost { font-size: 15px; padding: 14px 24px; }
+
   .features-grid { grid-template-columns: 1fr; }
   .feat-card.big { flex-direction: column; grid-column: span 1; }
   .ai-form-mini { width: 100%; }
@@ -965,6 +975,11 @@ footer {
   .pricing-value { font-size: 64px; }
   footer { flex-direction: column; text-align: center; padding: 32px 24px; }
   .how-steps { grid-template-columns: 1fr; }
+  .founder-inner { grid-template-columns: 1fr; gap: 40px; }
+  .founder-float-badge { display: inline-block; margin-top: 16px; }
+  .testimonials-grid { grid-template-columns: 1fr; }
+  .hero-proof > div { gap: 16px !important; }
+  .hero-proof > div > div[style*="width:1px"] { display: none; }
 }
 </style>
 </head>
