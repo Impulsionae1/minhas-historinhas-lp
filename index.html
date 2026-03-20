@@ -907,6 +907,38 @@ section { position: relative; z-index: 1; }
 .cta-final-title em { color: var(--gold); font-style: italic; }
 .cta-final-sub { color: var(--muted); font-size: 18px; font-weight: 300; margin-bottom: 48px; }
 
+.hero-stats {
+  display: flex;
+  gap: 32px;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: nowrap;
+}
+.hero-stat { text-align: center; }
+.hero-stat-value {
+  font-family: 'Playfair Display', serif;
+  font-size: 28px;
+  font-weight: 900;
+  color: var(--gold);
+  line-height: 1;
+}
+.hero-stat-label {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 4px;
+  line-height: 1.5;
+}
+.hero-stat-divider {
+  width: 1px;
+  height: 40px;
+  background: var(--border);
+  flex-shrink: 0;
+}
+@media (max-width: 480px) {
+  .hero-stats { flex-direction: column; gap: 20px; }
+  .hero-stat-divider { width: 40px; height: 1px; }
+}
+
 /* ---- FOOTER ---- */
 footer {
   border-top: 1px solid var(--border);
@@ -978,7 +1010,7 @@ footer {
   .founder-inner { grid-template-columns: 1fr; gap: 40px; }
   .founder-float-badge { display: inline-block; margin-top: 16px; }
   .testimonials-grid { grid-template-columns: 1fr; }
-  .hero-proof > div { gap: 16px !important; }
+  .hero-proof > div { flex-direction: column !important; gap: 20px !important; align-items: center !important; }
   .hero-proof > div > div[style*="width:1px"] { display: none; }
 }
 </style>
@@ -1029,20 +1061,20 @@ footer {
   </div>
 
   <div class="hero-proof">
-    <div style="display:flex; gap:32px; flex-wrap:wrap; justify-content:center; align-items:center;">
-      <div style="text-align:center;">
-        <div style="font-family:'Playfair Display',serif; font-size:28px; font-weight:900; color:var(--gold); line-height:1;">1.000+</div>
-        <div style="font-size:12px; color:var(--muted); margin-top:4px;">palavras a mais por ano<br/>em crianças que ouvem histórias</div>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <div class="hero-stat-value">1.000+</div>
+        <div class="hero-stat-label">palavras a mais por ano<br/>em crianças que ouvem histórias</div>
       </div>
-      <div style="width:1px; height:40px; background:var(--border);"></div>
-      <div style="text-align:center;">
-        <div style="font-family:'Playfair Display',serif; font-size:28px; font-weight:900; color:var(--gold); line-height:1;">💛</div>
-        <div style="font-size:12px; color:var(--muted); margin-top:4px;">memórias com os filhos<br/>começam com uma história</div>
+      <div class="hero-stat-divider"></div>
+      <div class="hero-stat">
+        <div class="hero-stat-value">💛</div>
+        <div class="hero-stat-label">memórias com os filhos<br/>começam com uma história</div>
       </div>
-      <div style="width:1px; height:40px; background:var(--border);"></div>
-      <div style="text-align:center;">
-        <div style="font-family:'Playfair Display',serif; font-size:28px; font-weight:900; color:var(--gold); line-height:1;">15 min</div>
-        <div style="font-size:12px; color:var(--muted); margin-top:4px;">por noite já fazem<br/>diferença no desenvolvimento</div>
+      <div class="hero-stat-divider"></div>
+      <div class="hero-stat">
+        <div class="hero-stat-value">15 min</div>
+        <div class="hero-stat-label">por noite já fazem<br/>diferença no desenvolvimento</div>
       </div>
     </div>
     <div style="width:100%; text-align:center; margin-top:12px; font-size:11px; color:rgba(255,255,255,0.3); letter-spacing:1px;">Fonte: American Academy of Pediatrics · Reading Aloud Research</div>
